@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -52,18 +51,165 @@ class _MyHomePageState extends State<MyHomePage> {
                     itemBuilder: (BuildContext context, int index) {
                       return Column(
                         children: [
-                          Container(
-                            color: const Color(0xFFFF5454),
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(data[index]
-                                        ['thumbnail']['path'] +
-                                    '.' +
-                                    data[index]['thumbnail']['extension']),
-                              ),
-                              title: Text(
-                                data[index]['name'],
-                                style: const TextStyle(color: Colors.white),
+                          InkWell(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Dialog(
+                                    backgroundColor: Colors.grey,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16.0),
+                                    ),
+                                    child: SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.8,
+                                      child: SingleChildScrollView(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: const Icon(
+                                                      Icons.close,
+                                                      size: 30,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Text(
+                                                data[index]['name'],
+                                                style: const TextStyle(
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 16),
+                                              Container(
+                                                width: double.infinity,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.8,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          16.0),
+                                                  image: DecorationImage(
+                                                    fit: BoxFit.cover,
+                                                    image: NetworkImage(
+                                                      data[index]['thumbnail']
+                                                              ['path'] +
+                                                          '.' +
+                                                          data[index]
+                                                                  ['thumbnail']
+                                                              ['extension'],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(height: 16),
+                                              Text(
+                                                'Descripción:',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              data[index]['description'] != ""
+                                                  ? Text(data[index]
+                                                      ['description'])
+                                                  : Text(
+                                                      'No hay descripción disponible'),
+                                              const SizedBox(height: 16),
+                                              Text(
+                                                'comics: ${data[index]['comics']['available']}',
+                                              ),
+                                              Text(
+                                                'series: ${data[index]['series']['available']}',
+                                              ),
+                                              Text(
+                                                'stories: ${data[index]['stories']['available']}',
+                                              ),
+                                              Text(
+                                                'eventos: ${data[index]['events']['available']}',
+                                              ),
+                                              const SizedBox(height: 16),
+                                              Text(
+                                                'Series:',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 120,
+                                                child: ListView.builder(
+                                                  scrollDirection:
+                                                      Axis.vertical,
+                                                  itemCount: data[index]
+                                                                      ['series']
+                                                                  ['items']
+                                                              .length >
+                                                          3
+                                                      ? 3
+                                                      : data[index]['series']
+                                                              ['items']
+                                                          .length,
+                                                  itemBuilder:
+                                                      (BuildContext context,
+                                                          int seriesIndex) {
+                                                    return Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 16),
+                                                      child: Column(
+                                                        children: [
+                                                          Text(
+                                                            data[index]['series']
+                                                                        [
+                                                                        'items']
+                                                                    [
+                                                                    seriesIndex]
+                                                                ['name'],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: Container(
+                              color: const Color(0xFFFF5454),
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                    data[index]['thumbnail']['path'] +
+                                        '.' +
+                                        data[index]['thumbnail']['extension'],
+                                  ),
+                                ),
+                                title: Text(
+                                  data[index]['name'],
+                                  style: const TextStyle(color: Colors.white),
+                                ),
                               ),
                             ),
                           ),
@@ -83,5 +229,4 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
-  }
+}
